@@ -12,6 +12,7 @@ import AttributionNodeEditor from "./AttributionNodeEditor";
 //mike
 import NumericInputGroup from "../inputs/NumericInputGroup";
 import StringInput from "../inputs/StringInput";
+import Vector3Input from "../inputs/Vector3Input";
 //mikend
 
 export default class ModelNodeEditor extends Component {
@@ -58,8 +59,8 @@ export default class ModelNodeEditor extends Component {
   };
   //mike
 
-  onChangeProxScale = proxScale => {
-    this.props.editor.setPropertySelected("proxScale", proxScale);
+  onChangeProxTrans = proxTrans => {
+    this.props.editor.setPropertySelected("proxTrans", proxTrans);
   };
 
   onChangeEnterDist = enterDist => {
@@ -74,8 +75,24 @@ export default class ModelNodeEditor extends Component {
     this.props.editor.setPropertySelected("minScale", minScale);
   };
 
+  onChangeMinPos = minPos => {
+    this.props.editor.setPropertySelected("minPos", minPos);
+  };
+
+  onChangeMinRot = minRot => {
+    this.props.editor.setPropertySelected("minRot", minRot);
+  };
+
   onChangeMaxScale = maxScale => {
     this.props.editor.setPropertySelected("maxScale", maxScale);
+  };
+
+  onChangeMaxPos = maxPos => {
+    this.props.editor.setPropertySelected("maxPos", maxPos);
+  };
+
+  onChangeMaxRot = maxRot => {
+    this.props.editor.setPropertySelected("maxRot", maxRot);
   };
 
   onChangeAnimDuration = animDuration => {
@@ -134,11 +151,11 @@ export default class ModelNodeEditor extends Component {
         <InputGroup name="Billboard" info="Model always faces user in Hubs. Does not billboard in Spoke.">
           <BooleanInput value={node.billboard} onChange={this.onChangeBillboard} />
         </InputGroup>
-        {node.proxScale && (
+        {node.proxTrans && (
           <>
             <NumericInputGroup
               name="Enter Distance"
-              info="The distance at which to move to Ending Scale."
+              info="The distance at which to move to Ending Transform Properties."
               min={0.001}
               smallStep={0.1}
               mediumStep={1}
@@ -148,7 +165,7 @@ export default class ModelNodeEditor extends Component {
             />
             <NumericInputGroup
               name="Exit Distance"
-              info="The distance at which to move back to Starting Scale."
+              info="The distance at which to move back to Starting Transform Properties."
               min={0.001}
               smallStep={0.1}
               mediumStep={1}
@@ -156,26 +173,60 @@ export default class ModelNodeEditor extends Component {
               value={node.exitDist}
               onChange={this.onChangeExitDist}
             />
-            <NumericInputGroup
-              name="Starting Scale"
-              info="Object size when out of proximity."
-              min={0.001}
-              smallStep={0.1}
-              mediumStep={1}
-              largeStep={10}
-              value={node.minScale}
-              onChange={this.onChangeMinScale}
-            />
-            <NumericInputGroup
-              name="Ending Scale"
-              info="Object size when within proximity."
-              min={0.001}
-              smallStep={0.1}
-              mediumStep={1}
-              largeStep={10}
-              value={node.maxScale}
-              onChange={this.onChangeMaxScale}
-            />
+            <InputGroup name="Starting Scale">
+              <Vector3Input
+                value={node.minScale}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMinScale}
+              />
+            </InputGroup>
+            <InputGroup name="Starting Position">
+              <Vector3Input
+                value={node.minPos}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMinPos}
+              />
+            </InputGroup>
+            <InputGroup name="Starting Rotation">
+              <Vector3Input
+                value={node.minRot}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMinRot}
+              />
+            </InputGroup>
+            <InputGroup name="Ending Scale">
+              <Vector3Input
+                value={node.maxScale}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMaxScale}
+              />
+            </InputGroup>
+            <InputGroup name="Ending Position">
+              <Vector3Input
+                value={node.maxPos}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMaxPos}
+              />
+            </InputGroup>
+            <InputGroup name="Ending Rotation">
+              <Vector3Input
+                value={node.maxRot}
+                smallStep={0.01}
+                mediumStep={0.1}
+                largeStep={1}
+                onChange={this.onChangeMaxRot}
+              />
+            </InputGroup>
             <NumericInputGroup
               name="Animation Duration"
               info="Time for animation duration in milliseconds. Minimum is 0."

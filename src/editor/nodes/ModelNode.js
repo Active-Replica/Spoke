@@ -80,15 +80,19 @@ export default class ModelNode extends EditorNodeMixin(Model) {
           node.billboard = true;
         }
         //mike
-        const proxScaleComponent = json.components.find(c => c.name === "proximity-scale");
-        if (proxScaleComponent) {
-          node.proxScale = proxScaleComponent.props.proxScale;
-          node.enterDist = proxScaleComponent.props.enterDist;
-          node.exitDist = proxScaleComponent.props.exitDist;
-          node.minScale = proxScaleComponent.props.minScale;
-          node.maxScale = proxScaleComponent.props.maxScale;
-          node.animDuration = proxScaleComponent.props.animDuration;
-          node.animEasing = proxScaleComponent.props.animEasing;
+        const proxTransComponent = json.components.find(c => c.name === "proximity-transform");
+        if (proxTransComponent) {
+          node.proxTrans = proxTransComponent.props.proxTrans;
+          node.enterDist = proxTransComponent.props.enterDist;
+          node.exitDist = proxTransComponent.props.exitDist;
+          node.minScale = proxTransComponent.props.minScale;
+          node.minPos = proxTransComponent.props.minPos;
+          node.minRot = proxTransComponent.props.minRot;
+          node.maxScale = proxTransComponent.props.maxScale;
+          node.maxPos = proxTransComponent.props.maxPos;
+          node.maxRot = proxTransComponent.props.maxRot;
+          node.animDuration = proxTransComponent.props.animDuration;
+          node.animEasing = proxTransComponent.props.animEasing;
         }
         //mikend
       })()
@@ -111,11 +115,15 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.gltfJson = null;
     this._billboard = false;
     //mike
-    this.proxScale = false;
+    this.proxTrans = false;
     this.enterDist = 5;
     this.exitDist = 5.5;
-    this.minScale = 0.001;
-    this.maxScale = 1;
+    this.minScale = { x: 0.1, y: 0.1, z: 0.1 };
+    this.minPos = { x: 0, y: 0, z: 0 };
+    this.minRot = { x: 0, y: 0, z: 0 };
+    this.maxScale = { x: 1, y: 1, z: 1 };
+    this.maxPos = { x: 1, y: 1, z: 1 };
+    this.maxRot = { x: 1.56, y: 1.56, z: 1.56 };
     this.animDuration = 1000;
     this.animEasing = "easeInOutElastic(1, 1)";
     //mikend
@@ -396,13 +404,17 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     }
 
     //mike
-    if (this.proxScale) {
-      components["proximity-scale"] = {
-        proxScale: this.proxScale,
+    if (this.proxTrans) {
+      components["proximity-transform"] = {
+        proxTrans: this.proxTrans,
         enterDist: this.enterDist,
         exitDist: this.exitDist,
         minScale: this.minScale,
+        minPos: this.minPos,
+        minRot: this.minRot,
         maxScale: this.maxScale,
+        maxPos: this.maxPos,
+        maxRot: this.maxRot,
         animDuration: this.animDuration,
         animEasing: this.animEasing
       };
@@ -430,11 +442,15 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.combine = source.combine;
     this._billboard = source._billboard;
     //mike
-    this.proxScale = source.proxScale;
+    this.proxTrans = source.proxTrans;
     this.enterDist = source.enterDist;
     this.exitDist = source.exitDist;
     this.minScale = source.minScale;
+    this.minPos = source.minPos;
+    this.minRot = source.minRot;
     this.maxScale = source.maxScale;
+    this.maxPos = source.maxPos;
+    this.maxRot = source.maxRot;
     this.animDuration = source.animDuration;
     this.animEasing = source.animEasing;
     //mikend
@@ -475,12 +491,16 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     }
 
     //mike
-    if (this.proxScale) {
-      this.addGLTFComponent("proximity-scale", {
+    if (this.proxTrans) {
+      this.addGLTFComponent("proximity-transform", {
         enterDist: this.enterDist,
         exitDist: this.exitDist,
         minScale: this.minScale,
+        minPos: this.minPos,
+        minRot: this.minRot,
         maxScale: this.maxScale,
+        maxPos: this.maxPos,
+        maxRot: this.maxRot,
         animDuration: this.animDuration,
         animEasing: this.animEasing
       });
