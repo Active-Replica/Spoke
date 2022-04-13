@@ -9,6 +9,11 @@ import { Cube } from "styled-icons/fa-solid/Cube";
 import { GLTFInfo } from "../inputs/GLTFInfo";
 import AttributionNodeEditor from "./AttributionNodeEditor";
 
+//mike
+import NumericInputGroup from "../inputs/NumericInputGroup";
+import StringInput from "../inputs/StringInput";
+//mikend
+
 export default class ModelNodeEditor extends Component {
   static propTypes = {
     editor: PropTypes.object,
@@ -51,6 +56,36 @@ export default class ModelNodeEditor extends Component {
   onChangeBillboard = billboard => {
     this.props.editor.setPropertySelected("billboard", billboard);
   };
+  //mike
+
+  onChangeProxScale = proxScale => {
+    this.props.editor.setPropertySelected("proxScale", proxScale);
+  };
+
+  onChangeEnterDist = enterDist => {
+    this.props.editor.setPropertySelected("enterDist", enterDist);
+  };
+
+  onChangeExitDist = exitDist => {
+    this.props.editor.setPropertySelected("exitDist", exitDist);
+  };
+
+  onChangeMinScale = minScale => {
+    this.props.editor.setPropertySelected("minScale", minScale);
+  };
+
+  onChangeMaxScale = maxScale => {
+    this.props.editor.setPropertySelected("maxScale", maxScale);
+  };
+
+  onChangeAnimDuration = animDuration => {
+    this.props.editor.setPropertySelected("animDuration", animDuration);
+  };
+
+  onChangeAnimEasing = animEasing => {
+    this.props.editor.setPropertySelected("animEasing", animEasing);
+  };
+  //mikend
 
   isAnimationPropertyDisabled() {
     const { multiEdit, editor, node } = this.props;
@@ -99,6 +134,63 @@ export default class ModelNodeEditor extends Component {
         <InputGroup name="Billboard" info="Model always faces user in Hubs. Does not billboard in Spoke.">
           <BooleanInput value={node.billboard} onChange={this.onChangeBillboard} />
         </InputGroup>
+        {node.proxScale && (
+          <>
+            <NumericInputGroup
+              name="Enter Distance"
+              info="The distance at which to move to Ending Scale."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.enterDist}
+              onChange={this.onChangeEnterDist}
+            />
+            <NumericInputGroup
+              name="Exit Distance"
+              info="The distance at which to move back to Starting Scale."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.exitDist}
+              onChange={this.onChangeExitDist}
+            />
+            <NumericInputGroup
+              name="Starting Scale"
+              info="Object size when out of proximity."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.minScale}
+              onChange={this.onChangeMinScale}
+            />
+            <NumericInputGroup
+              name="Ending Scale"
+              info="Object size when within proximity."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.maxScale}
+              onChange={this.onChangeMaxScale}
+            />
+            <NumericInputGroup
+              name="Animation Duration"
+              info="Time for animation duration in milliseconds. Minimum is 0."
+              min={0}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.animDuration}
+              onChange={this.onChangeAnimDuration}
+            />
+            <InputGroup name="Animation Easing">
+              <StringInput id="animEasing" value={node.animEasing} onChange={this.onChangeAnimEasing} />
+            </InputGroup>
+          </>
+        )}
         {node.model && <GLTFInfo node={node} />}
         <AttributionNodeEditor name="Attribution" {...this.props} />
       </NodeEditor>

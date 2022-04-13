@@ -79,6 +79,18 @@ export default class ModelNode extends EditorNodeMixin(Model) {
         if (json.components.find(c => c.name === "billboard")) {
           node.billboard = true;
         }
+        //mike
+        const proxScaleComponent = json.components.find(c => c.name === "proximity-scale");
+        if (proxScaleComponent) {
+          node.proxScale = proxScaleComponent.props.proxScale;
+          node.enterDist = proxScaleComponent.props.enterDist;
+          node.exitDist = proxScaleComponent.props.exitDist;
+          node.minScale = proxScaleComponent.props.minScale;
+          node.maxScale = proxScaleComponent.props.maxScale;
+          node.animDuration = proxScaleComponent.props.animDuration;
+          node.animEasing = proxScaleComponent.props.animEasing;
+        }
+        //mikend
       })()
     );
 
@@ -98,6 +110,15 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.stats = defaultStats;
     this.gltfJson = null;
     this._billboard = false;
+    //mike
+    this.proxScale = false;
+    this.enterDist = 5;
+    this.exitDist = 5.5;
+    this.minScale = 0.001;
+    this.maxScale = 1;
+    this.animDuration = 1000;
+    this.animEasing = "easeInOutElastic(1, 1)";
+    //mikend
   }
 
   // Overrides Model's src property and stores the original (non-resolved) url.
@@ -374,6 +395,20 @@ export default class ModelNode extends EditorNodeMixin(Model) {
       components.billboard = {};
     }
 
+    //mike
+    if (this.proxScale) {
+      components["proximity-scale"] = {
+        proxScale: this.proxScale,
+        enterDist: this.enterDist,
+        exitDist: this.exitDist,
+        minScale: this.minScale,
+        maxScale: this.maxScale,
+        animDuration: this.animDuration,
+        animEasing: this.animEasing
+      };
+    }
+    //mikend
+
     return super.serialize(components);
   }
 
@@ -394,6 +429,15 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.walkable = source.walkable;
     this.combine = source.combine;
     this._billboard = source._billboard;
+    //mike
+    this.proxScale = source.proxScale;
+    this.enterDist = source.enterDist;
+    this.exitDist = source.exitDist;
+    this.minScale = source.minScale;
+    this.maxScale = source.maxScale;
+    this.animDuration = source.animDuration;
+    this.animEasing = source.animEasing;
+    //mikend
 
     this.updateStaticModes();
 
@@ -429,5 +473,18 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     if (this.billboard) {
       this.addGLTFComponent("billboard", {});
     }
+
+    //mike
+    if (this.proxScale) {
+      this.addGLTFComponent("proximity-scale", {
+        enterDist: this.enterDist,
+        exitDist: this.exitDist,
+        minScale: this.minScale,
+        maxScale: this.maxScale,
+        animDuration: this.animDuration,
+        animEasing: this.animEasing
+      });
+    }
+    //mikend
   }
 }
