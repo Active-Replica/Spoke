@@ -121,6 +121,16 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
         node.background.set(color);
       }
 
+      //active replica
+      const proxReactComp = json.components.find(c => c.name === "prox-react");
+      console.log("proxReactComp", proxReactComp);
+
+      if (proxReactComp) {
+        node.proxReact = proxReactComp.props.proxReact;
+        node.proxReverse = proxReactComp.props.proxReverse;
+      }
+      //activereplicaend
+
       const audioSettings = json.components.find(c => c.name === "audio-settings");
 
       if (audioSettings) {
@@ -149,6 +159,10 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
     this.url = null;
     this.metadata = {};
     this.background = new Color(0xaaaaaa);
+    //active replica
+    this.proxReact = false;
+    this.proxReverse = false;
+    //active replica end
     this._environmentMap = null;
     this._fogType = FogType.Disabled;
     this._fog = new Fog(0xffffff, 0.0025);
@@ -248,6 +262,10 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
     this.fogDensity = source.fogDensity;
     this.fogNearDistance = source.fogNearDistance;
     this.fogFarDistance = source.fogFarDistance;
+    //active replica
+    this.proxReact = source.proxReact;
+    this.proxReverse = source.proxReverse;
+    //active replica end
     this.overrideAudioSettings = source.overrideAudioSettings;
     this.avatarDistanceModel = source.avatarDistanceModel;
     this.avatarRolloffFactor = source.avatarRolloffFactor;
@@ -288,6 +306,13 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
               name: "background",
               props: {
                 color: serializeColor(this.background)
+              }
+            },
+            {
+              name: "prox-react",
+              props: {
+                proxReact: this.proxReact,
+                proxReverse: this.proxReverse
               }
             },
             {
@@ -382,6 +407,15 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
         density: this.fogDensity
       });
     }
+
+    //active replica
+    if (this.proxReact) {
+      this.addGLTFComponent("prox-react", {
+        enabled: this.proxReact,
+        reverse: this.proxReverse
+      });
+    }
+    //active replica end
 
     if (this.overrideAudioSettings) {
       const avatarDistanceModel = this.exportPropertyValue("scene", "avatarDistanceModel");

@@ -32,6 +32,18 @@ export default function SceneNodeEditor(props) {
   const { editor, node } = props;
 
   const onChangeBackground = useSetPropertySelected(editor, "background");
+  // const onChangeProxReact = proxReact => {
+  //   console.log(node.proxReact);
+  //   editor.setPropertySelected("proxReact", proxReact);
+  // };
+  // const onChangeProxReverse = proxReverse => {
+  //   console.log(node.proxReverse)
+  //   editor.setPropertySelected("proxReverse", proxReverse);
+  // };
+  const onChangeProxReact = useSetPropertySelected(editor, "proxReact", () => {
+    console.log(editor, node);
+  });
+  const onChangeProxReverse = useSetPropertySelected(editor, "proxReverse");
   const onChangeFogType = useSetPropertySelected(editor, "fogType");
   const onChangeFogColor = useSetPropertySelected(editor, "fogColor");
   const onChangeFogNearDistance = useSetPropertySelected(editor, "fogNearDistance");
@@ -167,6 +179,14 @@ export default function SceneNodeEditor(props) {
           value={node.fogDensity}
           onChange={onChangeFogDensity}
         />
+      )}
+      <InputGroup name="Enable ProxReact">
+        <BooleanInput value={node.proxReact} onChange={onChangeProxReact} />
+      </InputGroup>
+      {node.proxReact && (
+        <InputGroup name="Enable ProxReverse">
+          <BooleanInput value={node.proxReverse} onChange={onChangeProxReverse} />
+        </InputGroup>
       )}
       <InputGroup name="Override Audio Settings">
         <BooleanInput value={node.overrideAudioSettings} onChange={onChangeOverrideAudioSettings} />
