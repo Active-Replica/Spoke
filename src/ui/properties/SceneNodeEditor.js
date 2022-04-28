@@ -32,18 +32,10 @@ export default function SceneNodeEditor(props) {
   const { editor, node } = props;
 
   const onChangeBackground = useSetPropertySelected(editor, "background");
-  // const onChangeProxReact = proxReact => {
-  //   console.log(node.proxReact);
-  //   editor.setPropertySelected("proxReact", proxReact);
-  // };
-  // const onChangeProxReverse = proxReverse => {
-  //   console.log(node.proxReverse)
-  //   editor.setPropertySelected("proxReverse", proxReverse);
-  // };
-  const onChangeProxReact = useSetPropertySelected(editor, "proxReact", () => {
-    console.log(editor, node);
-  });
+  //activereplica
+  const onChangeProxReact = useSetPropertySelected(editor, "proxReact");
   const onChangeProxReverse = useSetPropertySelected(editor, "proxReverse");
+  //active replica end
   const onChangeFogType = useSetPropertySelected(editor, "fogType");
   const onChangeFogColor = useSetPropertySelected(editor, "fogColor");
   const onChangeFogNearDistance = useSetPropertySelected(editor, "fogNearDistance");

@@ -123,7 +123,7 @@ export default class SceneNode extends EditorNodeMixin(Scene) {
 
       //active replica
       const proxReactComp = json.components.find(c => c.name === "prox-react");
-      console.log("proxReactComp", proxReactComp);
+      //console.log("proxReactComp", proxReactComp);
 
       if (proxReactComp) {
         node.proxReact = proxReactComp.props.proxReact;
