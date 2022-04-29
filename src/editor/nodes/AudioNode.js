@@ -23,6 +23,15 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
     const audioComp = json.components.find(c => c.name === "audio");
     const { src, controls, autoPlay, loop } = audioComp.props;
 
+    //mike
+    const proxPlayComp = json.components.find(c => c.name === "proximity-play-audio");
+    if (proxPlayComp) {
+      node.proxPlay = proxPlayComp.props.proxPlay;
+      node.playRad = proxPlayComp.props.playRad;
+      node.pauseRad = proxPlayComp.props.pauseRad;
+    }
+    //mikend
+
     loadAsync(
       (async () => {
         await node.load(src, onError);
@@ -41,6 +50,11 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
     this._canonicalUrl = "";
     this._autoPlay = true;
     this.controls = true;
+    //mike
+    this.proxPlay = false;
+    this.playRad = 3;
+    this.pauseRad = 4;
+    //mikend
 
     const geometry = new PlaneBufferGeometry();
     const material = new MeshBasicMaterial();
@@ -146,19 +160,29 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
 
     this._canonicalUrl = source._canonicalUrl;
     this.controls = source.controls;
+    this.proxPlay = source.proxPlay;
+    this.playRad = source.playRad;
+    this.pauseRad = source.pauseRad;
 
     return this;
   }
 
   serialize() {
+    //mike
     return super.serialize({
       audio: {
         src: this._canonicalUrl,
         controls: this.controls,
         autoPlay: this.autoPlay,
         loop: this.loop
+      },
+      "proximity-play-audio": {
+        proxPlay: this.proxPlay,
+        playRad: this.playRad,
+        pauseRad: this.pauseRad
       }
     });
+    //mikend
   }
 
   prepareForExport() {
@@ -174,5 +198,11 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
       id: this.uuid
     });
     this.replaceObject();
+    if (this.proxPlay) {
+      this.addGLTFComponent("proximity-play-audio", {
+        playRad: this.playRad,
+        pauseRad: this.pauseRad
+      });
+    }
   }
 }
