@@ -22,6 +22,7 @@ export default function AudioNodeEditor(props) {
   const onChangeProxPlay = useSetPropertySelected(editor, "proxPlay");
   const onChangePlayRad = useSetPropertySelected(editor, "playRad");
   const onChangePauseRad = useSetPropertySelected(editor, "pauseRad");
+  const onChangeShouldReset = useSetPropertySelected(editor, "shouldReset");
 
   return (
     <NodeEditor description={AudioNodeEditor.description} {...props}>
@@ -56,6 +57,9 @@ export default function AudioNodeEditor(props) {
             value={node.pauseRad}
             onChange={onChangePauseRad}
           />
+          <InputGroup name="File Should Reset" info="This toggle will reset the audio file on each activation">
+            <BooleanInput value={node.shouldReset} onChange={onChangeShouldReset} />
+          </InputGroup>
         </>
       )}
       <InputGroup name="Auto Play" info="If true, the media will play when first entering the scene.">

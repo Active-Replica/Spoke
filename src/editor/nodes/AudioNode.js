@@ -29,6 +29,7 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
       node.proxPlay = proxPlayComp.props.proxPlay;
       node.playRad = proxPlayComp.props.playRad;
       node.pauseRad = proxPlayComp.props.pauseRad;
+      node.shouldReset = proxPlayComp.props.shouldReset;
     }
     //mikend
 
@@ -54,6 +55,7 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
     this.proxPlay = false;
     this.playRad = 3;
     this.pauseRad = 4;
+    this.shouldReset = false;
     //mikend
 
     const geometry = new PlaneBufferGeometry();
@@ -160,9 +162,12 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
 
     this._canonicalUrl = source._canonicalUrl;
     this.controls = source.controls;
+    //mike
     this.proxPlay = source.proxPlay;
     this.playRad = source.playRad;
     this.pauseRad = source.pauseRad;
+    this.shouldReset = source.shouldReset;
+    //mikeend
 
     return this;
   }
@@ -179,7 +184,8 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
       "proximity-play-audio": {
         proxPlay: this.proxPlay,
         playRad: this.playRad,
-        pauseRad: this.pauseRad
+        pauseRad: this.pauseRad,
+        shouldReset: this.shouldReset
       }
     });
     //mikend
@@ -201,7 +207,8 @@ export default class AudioNode extends AudioParamsNode(AudioSource) {
     if (this.proxPlay) {
       this.addGLTFComponent("proximity-play-audio", {
         playRad: this.playRad,
-        pauseRad: this.pauseRad
+        pauseRad: this.pauseRad,
+        shouldReset: this.shouldReset
       });
     }
   }
