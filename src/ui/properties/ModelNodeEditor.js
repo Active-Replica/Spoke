@@ -134,6 +134,9 @@ export default class ModelNodeEditor extends Component {
         <InputGroup name="Billboard" info="Model always faces user in Hubs. Does not billboard in Spoke.">
           <BooleanInput value={node.billboard} onChange={this.onChangeBillboard} />
         </InputGroup>
+        <InputGroup name="Enable Proximity Scaling">
+          <BooleanInput value={node.proxScale} onChange={this.onChangeProxScale} />
+        </InputGroup>
         {node.proxScale && (
           <>
             <NumericInputGroup
