@@ -85,6 +85,30 @@ export default class ModelNodeEditor extends Component {
   onChangeAnimEasing = animEasing => {
     this.props.editor.setPropertySelected("animEasing", animEasing);
   };
+
+  onChangeProxAnim = proxAnim => {
+    this.props.editor.setPropertySelected("proxAnim", proxAnim);
+  };
+
+  onChangeClipNames = clipNames => {
+    this.props.editor.setPropertySelected("clipNames", clipNames || []);
+  };
+
+  onChangePlayDist = playDist => {
+    this.props.editor.setPropertySelected("playDist", playDist);
+  };
+
+  onChangePauseDist = pauseDist => {
+    this.props.editor.setPropertySelected("pauseDist", pauseDist);
+  };
+
+  onChangeShouldReset = shouldReset => {
+    this.props.editor.setPropertySelected("shouldReset", shouldReset);
+  };
+
+  onChangeShouldLoop = shouldLoop => {
+    this.props.editor.setPropertySelected("shouldLoop", shouldLoop);
+  };
   //mikend
 
   isAnimationPropertyDisabled() {
@@ -191,6 +215,58 @@ export default class ModelNodeEditor extends Component {
             />
             <InputGroup name="Animation Easing">
               <StringInput id="animEasing" value={node.animEasing} onChange={this.onChangeAnimEasing} />
+            </InputGroup>
+          </>
+        )}
+        <InputGroup name="Enable Proximity Animation">
+          <BooleanInput value={node.proxAnim} onChange={this.onChangeProxAnim} />
+        </InputGroup>
+        {node.proxAnim && (
+          <>
+            <InputGroup name="Animations">
+              <SelectInput
+                disabled={this.isAnimationPropertyDisabled()}
+                options={node.getClipOptions()}
+                value={node.clipNames}
+                onChange={this.onChangeClipNames}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                isMulti
+              />
+            </InputGroup>
+            <NumericInputGroup
+              name="Play Threshold"
+              info="The radius at which animation plays."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.playDist}
+              onChange={this.onChangePlayDist}
+            />
+            <NumericInputGroup
+              name="Pause Threshold"
+              info="The radius at which animation pauses."
+              min={0.001}
+              smallStep={0.1}
+              mediumStep={1}
+              largeStep={10}
+              value={node.pauseDist}
+              onChange={this.onChangePauseDist}
+            />
+            <InputGroup name="Should Reset">
+              <BooleanInput
+                value={node.shouldReset}
+                onChange={this.onChangeShouldReset}
+                info="Whether to reset the animation table on each activation."
+              />
+            </InputGroup>
+            <InputGroup name="Should Loop">
+              <BooleanInput
+                value={node.shouldLoop}
+                onChange={this.onChangeShouldLoop}
+                info="Whether to play the animation in a continuous loop or only once."
+              />
             </InputGroup>
           </>
         )}

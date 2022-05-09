@@ -55,6 +55,7 @@ export default class ModelNode extends EditorNodeMixin(Model) {
         const loopAnimationComponent = json.components.find(c => c.name === "loop-animation");
 
         if (loopAnimationComponent && loopAnimationComponent.props) {
+          //console.log(loopAnimationComponent.props)
           const { clip, activeClipIndices } = loopAnimationComponent.props;
 
           if (clip !== undefined && node.model && node.model.animations) {
@@ -90,6 +91,17 @@ export default class ModelNode extends EditorNodeMixin(Model) {
           node.animDuration = proxScaleComponent.props.animDuration;
           node.animEasing = proxScaleComponent.props.animEasing;
         }
+
+        const proxAnimComp = json.components.find(c => c.name === "proximity-animation");
+        if (proxAnimComp) {
+          //console.log(proxAnimComp.props)
+          node.proxAnim = proxAnimComp.props.proxAnim;
+          node.clipNames = proxAnimComp.props.clipNames;
+          node.playDist = proxAnimComp.props.playDist;
+          node.pauseDist = proxAnimComp.props.pauseDist;
+          node.shouldReset = proxAnimComp.props.shouldReset;
+          node.shouldLoop = proxAnimComp.props.shouldLoop;
+        }
         //mikend
       })()
     );
@@ -118,6 +130,12 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.maxScale = 1;
     this.animDuration = 1000;
     this.animEasing = "easeInOutElastic(1, 1)";
+    this.proxAnim = false;
+    this.clipNames = [];
+    this.playDist = 3;
+    this.pauseDist = 5;
+    this.shouldReset = true;
+    this.shouldLoop = true;
     //mikend
   }
 
@@ -407,6 +425,17 @@ export default class ModelNode extends EditorNodeMixin(Model) {
         animEasing: this.animEasing
       };
     }
+
+    if (this.proxAnim) {
+      components["proximity-animation"] = {
+        proxAnim: this.proxAnim,
+        clipNames: this.clipNames,
+        playDist: this.playDist,
+        pauseDist: this.pauseDist,
+        shouldReset: this.shouldReset,
+        shouldLoop: this.shouldLoop
+      };
+    }
     //mikend
 
     return super.serialize(components);
@@ -437,6 +466,13 @@ export default class ModelNode extends EditorNodeMixin(Model) {
     this.maxScale = source.maxScale;
     this.animDuration = source.animDuration;
     this.animEasing = source.animEasing;
+
+    this.proxAnim = source.proxAnim;
+    this.clipNames = source.clipNames;
+    this.playDist = source.playDist;
+    this.pauseDist = source.pauseDist;
+    this.shouldReset = source.shouldReset;
+    this.shouldLoop = source.shouldLoop;
     //mikend
 
     this.updateStaticModes();
@@ -483,6 +519,16 @@ export default class ModelNode extends EditorNodeMixin(Model) {
         maxScale: this.maxScale,
         animDuration: this.animDuration,
         animEasing: this.animEasing
+      });
+    }
+
+    if (this.proxAnim) {
+      this.addGLTFComponent("proximity-animation", {
+        clipNames: this.clipNames,
+        playDist: this.playDist,
+        pauseDist: this.pauseDist,
+        shouldReset: this.shouldReset,
+        shouldLoop: this.shouldLoop
       });
     }
     //mikend

@@ -20,8 +20,8 @@ export default function AudioNodeEditor(props) {
   const onChangeAutoPlay = useSetPropertySelected(editor, "autoPlay");
   const onChangeLoop = useSetPropertySelected(editor, "loop");
   const onChangeProxPlay = useSetPropertySelected(editor, "proxPlay");
-  const onChangePlayRad = useSetPropertySelected(editor, "playRad");
-  const onChangePauseRad = useSetPropertySelected(editor, "pauseRad");
+  const onChangePlayRadius = useSetPropertySelected(editor, "playRadius");
+  const onChangePauseRadius = useSetPropertySelected(editor, "pauseRadius");
   const onChangeShouldReset = useSetPropertySelected(editor, "shouldReset");
 
   return (
@@ -44,8 +44,8 @@ export default function AudioNodeEditor(props) {
             smallStep={0.1}
             mediumStep={1}
             largeStep={10}
-            value={node.playRad}
-            onChange={onChangePlayRad}
+            value={node.playRadius}
+            onChange={onChangePlayRadius}
           />
           <NumericInputGroup
             name="Pause Threshold"
@@ -54,8 +54,8 @@ export default function AudioNodeEditor(props) {
             smallStep={0.1}
             mediumStep={1}
             largeStep={10}
-            value={node.pauseRad}
-            onChange={onChangePauseRad}
+            value={node.pauseRadius}
+            onChange={onChangePauseRadius}
           />
           <InputGroup name="File Should Reset" info="This toggle will reset the audio file on each activation">
             <BooleanInput value={node.shouldReset} onChange={onChangeShouldReset} />
